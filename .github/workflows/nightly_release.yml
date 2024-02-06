@@ -5,6 +5,9 @@ on:
     - cron: "0 0 * * *"
   workflow_dispatch:
 
+permissions:
+  packages: write
+
 jobs:
   tests:
     uses: ./.github/workflows/run_integration_tests.yml
@@ -52,6 +55,6 @@ jobs:
         run: dotnet pack -c Release -o package tools/UglyToad.PdfPig.Package/UglyToad.PdfPig.Package.csproj -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg
 
       - name: Publish Nuget to GitHub registry
-        run: dotnet nuget push **/*.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGET_API_KEY || secrets.GITHUB_TOKEN }} --source ${{ vars.NUGET_SOURCE || 'https://api.nuget.org/v3/index.json' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
