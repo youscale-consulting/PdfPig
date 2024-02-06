@@ -1062,6 +1062,26 @@
         #endregion
 
         /// <summary>
+        /// Whether the one of rectangle corners is located inside the path.
+        /// </summary>
+        /// <param name="path">The path that should contain the rectangle corner.</param>
+        /// <param name="rectangle">The rectangle that should be intersected within the path.</param>
+        /// <param name="includeBorder">If set to false, will return false if the rectangle is on the path's border.</param>
+        public static bool IntersectsWith(this PdfPath path, PdfRectangle rectangle, bool includeBorder = false)
+        {
+            // NB, For later dev: Might not work for concave outer path, as it can contain all the points of the inner rectangle, but have overlapping edges.
+            var clipperPaths = path.Select(sp => sp.ToClipperPolygon().ToList()).ToList();
+            var fillType = path.FillingRule == FillingRule.NonZeroWinding ? ClipperPolyFillType.NonZero : ClipperPolyFillType.EvenOdd;
+            foreach (var point in rectangle.ToClipperPolygon())
+            {
+                if (PointInPaths(point, clipperPaths, fillType, includeBorder))
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Whether the point is located inside the subpath.
         /// <para>Ignores winding rule.</para>
         /// </summary>

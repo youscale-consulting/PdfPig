@@ -108,6 +108,16 @@
                     transformationMatrix,
                     new PdfRectangle(0, 0, characterBoundingBox.Width, 0));
 
+            if (ParsingOptions.ClipPaths)
+            {
+                var currentClipping = GetCurrentState().CurrentClippingPath;
+
+                if (currentClipping?.IntersectsWith(transformedGlyphBounds) == false)
+                {
+                    return;
+                }
+            }
+
             Letter letter = null;
             if (Diacritics.IsInCombiningDiacriticRange(unicode) && currentOffset > 0 && letters.Count > 0)
             {
