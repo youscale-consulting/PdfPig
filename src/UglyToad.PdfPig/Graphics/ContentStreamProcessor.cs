@@ -108,7 +108,7 @@
                     transformationMatrix,
                     new PdfRectangle(0, 0, characterBoundingBox.Width, 0));
 
-            if (ParsingOptions.ClipPaths)
+            if (ParsingOptions.ClipText)
             {
                 var currentClipping = GetCurrentState().CurrentClippingPath;
 
@@ -421,7 +421,7 @@
             AddCurrentSubpath();
             CurrentPath.SetClipping(clippingRule);
 
-            if (ParsingOptions.ClipPaths)
+            if (ParsingOptions.ClipPaths || ParsingOptions.ClipText)
             {
                 var currentClipping = GetCurrentState().CurrentClippingPath;
                 currentClipping.SetClipping(clippingRule);

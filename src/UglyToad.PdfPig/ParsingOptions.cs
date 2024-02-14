@@ -24,6 +24,13 @@
         public bool ClipPaths { get; set; } = false;
 
         /// <summary>
+        /// Should the parser apply clipping to text?
+        /// Defaults to <see langword="false"/>.
+        /// <para>Letters that intersect with clipping region will be excluded if this is set to <see langword="true"/>.</para>
+        /// </summary>
+        public bool ClipText { get; set; } = false;
+
+        /// <summary>
         /// Should the parser ignore issues where the document does not conform to the PDF specification?
         /// </summary>
         public bool UseLenientParsing { get; set; } = true;
